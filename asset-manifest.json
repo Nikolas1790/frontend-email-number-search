@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/frontend-email-number-search/static/css/main.7acaea2f.css",
+    "main.js": "/frontend-email-number-search/static/js/main.07d3183d.js",
+    "index.html": "/frontend-email-number-search/index.html",
+    "main.7acaea2f.css.map": "/frontend-email-number-search/static/css/main.7acaea2f.css.map",
+    "main.07d3183d.js.map": "/frontend-email-number-search/static/js/main.07d3183d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7acaea2f.css",
+    "static/js/main.07d3183d.js"
+  ]
+}
