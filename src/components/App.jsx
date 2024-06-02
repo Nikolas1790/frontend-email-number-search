@@ -3,6 +3,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { ContentContainer, ErrMessage, FormContent, NotFoundMessage, ResultItem, ResultsContainer, StyledButton, StyledField, StyledLabel } from './App.styled';
+import Loader from './Loader/Loader';
 
 axios.defaults.baseURL = 'https://backend-email-number-search.onrender.com/api/contacts';
 
@@ -27,6 +28,7 @@ const formatPhoneNumber = (number) => {
 export function App() {
   const [contact, setContact] = useState('');
   const [notFound, setNotFound] = useState(false);
+  const [loading, setLoading] = useState(false);
   const cancelTokenSource = useRef(null);
 
   useEffect(() => {
@@ -38,13 +40,12 @@ export function App() {
   }, []);
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    setLoading(true);
     setContact('');
     setNotFound(false);
-
     if (cancelTokenSource.current) {
       cancelTokenSource.current.cancel('New request initiated');
     }
-
     cancelTokenSource.current = axios.CancelToken.source();
 
     try {
@@ -58,7 +59,7 @@ export function App() {
         setNotFound(true);
       }
       resetForm();
-
+      setLoading(false);
     } catch (error) {
       if (axios.isCancel(error)) {
         console.log('Request canceled', error.message);
@@ -66,7 +67,7 @@ export function App() {
         console.error(error);
       }
     } finally {
-      setSubmitting(false);
+      setSubmitting(false);      
     }
   };
 
@@ -95,7 +96,7 @@ export function App() {
           </FormContent>
         )}
       </Formik>
-
+      {loading && <Loader />}
       {contact && (
         <ResultsContainer>
           <h2>Results:</h2>
