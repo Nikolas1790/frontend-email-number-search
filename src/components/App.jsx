@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { ContentContainer, ErrMessage, FormContent, NotFoundMessage, ResultItem, ResultsContainer, StyledButton, StyledField, StyledLabel } from './App.styled';
 
 axios.defaults.baseURL = 'https://backend-email-number-search.onrender.com/api/contacts';
 
@@ -21,16 +22,19 @@ const formatPhoneNumber = (number) => {
 
 export function App() {
   const [contact, setContact] = useState('');
+  const [notFound, setNotFound] = useState(false);
       console.log(contact);
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
-    setContact(null);
+    setContact('');
+    setNotFound(false);
     try {
       const response = await axios.get('/customer', { params: { email: values.email } });
       if (response.data.length > 0) {
         setContact(response.data[0]);
       } else {
-        setContact('');
+        // setContact('');
+        setNotFound(true);
       }
       resetForm();
     } catch (error) {
@@ -41,49 +45,54 @@ export function App() {
   };
 
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 20,
-        color: '#010101',
-      }}
-    >
+    <ContentContainer >
       <Formik
         initialValues={{ email: '', number: '' }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
         {({ isSubmitting }) => (
-          <Form>
+          <FormContent>
             <div>
-              <label htmlFor="email">Email:</label>
-              <Field type="email" id="email" name="email" />
-              <ErrorMessage name="email" component="div" />
+              <StyledLabel htmlFor="email">Email:</StyledLabel>
+              <StyledField type="email" id="email" name="email" />
+              <ErrMessage name="email" component="div" />
             </div>
             <div>
-              <label htmlFor="number">Number:</label>
-              <Field type="text" id="number" name="number" />
-              <ErrorMessage name="number" component="div" />
+              <StyledLabel htmlFor="number">Number:</StyledLabel>
+              <StyledField type="text" id="number" name="number" />
+              <ErrMessage name="number" component="div" />
             </div>
-            <button type="submit" disabled={isSubmitting}>
+            <StyledButton type="submit" >
               Submit
-            </button>
-          </Form>
+            </StyledButton>
+          </FormContent>
         )}
       </Formik>
 
+
+
+
+
+
+
       {contact && (
-        <div>
+        <ResultsContainer>
           <h2>Results:</h2>
-          <p>{contact.email}</p>
-          <p>{formatPhoneNumber(contact.number)}</p>
-        </div>
+          <ResultItem>{contact.email}</ResultItem>
+          <ResultItem>{formatPhoneNumber(contact.number)}</ResultItem>
+        </ResultsContainer>
       )}
-    </div>
+
+
+
+
+
+      {notFound && (
+        <NotFoundMessage>
+          <h2>Oops nothing found ;(</h2>
+        </NotFoundMessage>
+      )}
+    </ContentContainer>
   );
 };
-
-
