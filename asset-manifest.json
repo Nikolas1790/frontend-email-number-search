@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/frontend-email-number-search/static/css/main.7acaea2f.css",
-    "main.js": "/frontend-email-number-search/static/js/main.ad1fd5e5.js",
+    "main.js": "/frontend-email-number-search/static/js/main.4df3452c.js",
     "index.html": "/frontend-email-number-search/index.html",
     "main.7acaea2f.css.map": "/frontend-email-number-search/static/css/main.7acaea2f.css.map",
-    "main.ad1fd5e5.js.map": "/frontend-email-number-search/static/js/main.ad1fd5e5.js.map"
+    "main.4df3452c.js.map": "/frontend-email-number-search/static/js/main.4df3452c.js.map"
   },
   "entrypoints": [
     "static/css/main.7acaea2f.css",
-    "static/js/main.ad1fd5e5.js"
+    "static/js/main.4df3452c.js"
   ]
 }
