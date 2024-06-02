@@ -6,10 +6,33 @@ import { ContentContainer, ErrMessage, FormContent, NotFoundMessage, ResultItem,
 
 axios.defaults.baseURL = 'https://backend-email-number-search.onrender.com/api/contacts';
 
+const initialValues = {
+  email: '',
+  number: '',
+};
+
 const validationSchema = Yup.object({
   email: Yup.string().email('Invalid email format').required('Required'),
   number: Yup.string().matches(/^\d{6}$/, 'Number must be 6 digits').nullable(),
 });
+
+
+// Axios Interceptors
+let source = axios.CancelToken.source();
+
+axios.interceptors.request.use(
+  (config) => {
+    if (source) {
+      source.cancel('Request canceled');
+    }
+    source = axios.CancelToken.source();
+    config.cancelToken = source.token;
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 
 // Функция для форматирования номера телефона
@@ -29,7 +52,10 @@ export function App() {
     setContact('');
     setNotFound(false);
     try {
-      const response = await axios.get('/customer', { params: { email: values.email } });
+      const response = await axios.get('/customer', {
+        params: { email: values.email },
+        cancelToken: source.token,
+      });
       if (response.data.length > 0) {
         setContact(response.data[0]);
       } else {
@@ -38,7 +64,11 @@ export function App() {
       }
       resetForm();
     } catch (error) {
-      console.error(error);
+      if (axios.isCancel(error)) {
+        console.log('Request canceled', error.message);
+      } else {
+        console.error(error);
+      }
     } finally {
       setSubmitting(false);
     }
@@ -47,7 +77,7 @@ export function App() {
   return (
     <ContentContainer >
       <Formik
-        initialValues={{ email: '', number: '' }}
+        initialValues={ initialValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
@@ -70,12 +100,6 @@ export function App() {
         )}
       </Formik>
 
-
-
-
-
-
-
       {contact && (
         <ResultsContainer>
           <h2>Results:</h2>
@@ -83,10 +107,6 @@ export function App() {
           <ResultItem>{formatPhoneNumber(contact.number)}</ResultItem>
         </ResultsContainer>
       )}
-
-
-
-
 
       {notFound && (
         <NotFoundMessage>

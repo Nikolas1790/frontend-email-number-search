@@ -34,7 +34,6 @@ export const  FormContent = styled(Form)`
   border-radius: 8px;
 `
 
-
 export const StyledLabel = styled.label`
   font-size: 16px;
   font-weight: 600;
@@ -64,20 +63,13 @@ export const StyledButton = styled.button`
   &:hover {
     background-color: #0056b3;
   }
-  /* &:disabled {
-    background-color: #cccccc;
-  } */
 `;
-
 
 export const ErrMessage = styled(ErrorMessage)`
   font-size: 12px;
   line-height: 1;
   color: red;
 `
-
-
-
 
 export const ResultsContainer = styled.div`
   margin-top: 20px;
