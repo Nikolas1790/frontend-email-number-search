@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -20,31 +20,18 @@ const formatPhoneNumber = (number) => {
 };
 
 export function App() {
-  const [data, setData] = useState(null);
   const [contact, setContact] = useState('');
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('/');
-        setData(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchData();
-  }, [])
       console.log(contact);
-      console.log(data);
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    setContact(null);
     try {
-      const customer = data.find(i => i.email === values.email)
-      setContact(customer)
-      // const response = await axios.get('/');
-      // const response = await axios.get(`/${id}`);
-
-      // console.log(customer);
+      const response = await axios.get('/customer', { params: { email: values.email } });
+      if (response.data.length > 0) {
+        setContact(response.data[0]);
+      } else {
+        setContact('');
+      }
       resetForm();
     } catch (error) {
       console.error(error);
