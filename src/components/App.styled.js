@@ -1,14 +1,7 @@
 import { ErrorMessage, Field, Form } from 'formik'
 import styled from 'styled-components'
 
-
-
 export const  ContentContainer = styled.div`
-  /* display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  height: 1000px; */
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -21,9 +14,6 @@ export const  ContentContainer = styled.div`
 `
 
 export const  FormContent = styled(Form)`
-  /* display: flex;
-  flex-direction: column;
-  gap: 10px; */
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -46,6 +36,7 @@ export const StyledField = styled(Field)`
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 40px;
+  
   &:focus {
     outline: none;
     border-color: #007BFF;

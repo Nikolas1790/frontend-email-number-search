@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -16,26 +16,6 @@ const validationSchema = Yup.object({
   number: Yup.string().matches(/^\d{6}$/, 'Number must be 6 digits').nullable(),
 });
 
-
-// Axios Interceptors
-let source = axios.CancelToken.source();
-
-axios.interceptors.request.use(
-  (config) => {
-    if (source) {
-      source.cancel('Request canceled');
-    }
-    source = axios.CancelToken.source();
-    config.cancelToken = source.token;
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
-
-// Функция для форматирования номера телефона
 const formatPhoneNumber = (number) => {
   if (number && number.length === 6) {
     return `${number.slice(0, 2)}-${number.slice(2, 4)}-${number.slice(4, 6)}`;
@@ -43,26 +23,42 @@ const formatPhoneNumber = (number) => {
   return number;
 };
 
+
 export function App() {
   const [contact, setContact] = useState('');
   const [notFound, setNotFound] = useState(false);
-      console.log(contact);
+  const cancelTokenSource = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (cancelTokenSource.current) {
+        cancelTokenSource.current.cancel('Component unmounted');
+      }
+    };
+  }, []);
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     setContact('');
     setNotFound(false);
+
+    if (cancelTokenSource.current) {
+      cancelTokenSource.current.cancel('New request initiated');
+    }
+
+    cancelTokenSource.current = axios.CancelToken.source();
+
     try {
       const response = await axios.get('/customer', {
         params: { email: values.email },
-        cancelToken: source.token,
+        cancelToken: cancelTokenSource.current.token,
       });
       if (response.data.length > 0) {
         setContact(response.data[0]);
       } else {
-        // setContact('');
         setNotFound(true);
       }
       resetForm();
+
     } catch (error) {
       if (axios.isCancel(error)) {
         console.log('Request canceled', error.message);
@@ -81,7 +77,7 @@ export function App() {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting }) => (
+        {() => (
           <FormContent>
             <div>
               <StyledLabel htmlFor="email">Email:</StyledLabel>
