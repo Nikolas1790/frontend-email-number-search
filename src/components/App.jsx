@@ -83,12 +83,12 @@ console.log(contact)
           <FormContent>
             <div>
               <StyledLabel htmlFor="email">Email:</StyledLabel>
-              <StyledField type="email" id="email" name="email" />
+              <StyledField type="email" id="email" name="email" placeholder="john@gmail.com" />
               <ErrMessage name="email" component="div" />
             </div>
             <div>
               <StyledLabel htmlFor="number">Number:</StyledLabel>
-              <StyledField type="text" id="number" name="number" />
+              <StyledField type="text" id="number" name="number" placeholder="777777" />
               <ErrMessage name="number" component="div" />
             </div>
             <StyledButton type="submit" >
