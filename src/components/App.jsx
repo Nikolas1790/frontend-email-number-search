@@ -13,7 +13,7 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object({
-  email: Yup.string().email('Invalid email format').required('Required'),
+  email: Yup.string().matches(/^\w+([.-]?\w+)*@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/, 'Invalid email address').required('Required'),
   number: Yup.string().matches(/^\d{6}$/, 'Number must be 6 digits').nullable(),
 });
 
@@ -30,7 +30,7 @@ export function App() {
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(false);
   const cancelTokenSource = useRef(null);
-
+console.log(contact)
   useEffect(() => {
     return () => {
       if (cancelTokenSource.current) {
@@ -107,7 +107,7 @@ export function App() {
 
       {notFound && (
         <NotFoundMessage>
-          <h2>Oops nothing found ;(</h2>
+          <h2>Oops nothing found :\</h2>
         </NotFoundMessage>
       )}
     </ContentContainer>

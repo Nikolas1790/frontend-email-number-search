@@ -69,10 +69,12 @@ export const ResultsContainer = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   width: 300px;
+  color: #007BFF;
 `;
 
 export const ResultItem = styled.p`
-  font-size: 16px;
+  font-size: 18px;
+  font-weight: 800;
   color: #333;
 `;
 
