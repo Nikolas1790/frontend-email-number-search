@@ -30,7 +30,7 @@ export function App() {
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(false);
   const cancelTokenSource = useRef(null);
-console.log(contact)
+
   useEffect(() => {
     return () => {
       if (cancelTokenSource.current) {
