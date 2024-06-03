@@ -16,8 +16,11 @@ This application allows you to search for contacts by email. If the email is fou
 
 ## Screenshots
 ![found-contact](./src/img/readme/form-result.jpg)
+
 **Found Contact**
+
 ![not-found-contact](./src/img/readme/form-not-found.jpg)
+
 **No Contact Found**
 
 ## Technologies Used
@@ -40,4 +43,4 @@ This application allows you to search for contacts by email. If the email is fou
 ## Author
 For any inquiries or assistance, please contact us at [ovsyannikovnikolai1790@gmail.com](ovsyannikovnikolai1790@gmail.com).
 
-Thank you for choosing our  E-Pharmacy Management System!
+Thank you for choosing our contact book management system!
