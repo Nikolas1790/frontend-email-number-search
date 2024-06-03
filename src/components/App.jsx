@@ -49,8 +49,9 @@ console.log(contact)
     cancelTokenSource.current = axios.CancelToken.source();
 
     try {
-      const response = await axios.get('/customer', {
-        params: { email: values.email },
+      const response = await axios.post('/customer', {
+        email: values.email,
+      }, {
         cancelToken: cancelTokenSource.current.token,
       });
       if (response.data.length > 0) {
